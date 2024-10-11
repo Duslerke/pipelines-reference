@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  modern-decks:
+  modern-decks-config:
     docker:
       - image: cimg/base:current
     steps:
@@ -15,4 +15,4 @@ jobs:
 workflows:
   decks-workflow:
     jobs:
-      - modern-decks
+      - modern-decks-config
