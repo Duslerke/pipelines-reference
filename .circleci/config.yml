@@ -1,16 +1,50 @@
 version: 2.1
 
-jobs:
-  say-hello:
+executors:
+  default-executor:
     docker:
       - image: cimg/base:current
+
+jobs:
+  modern-decks:
+    executor: default-executor
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Run modern pipeline
+          command: |
+            echo "Running modern-decks pipeline"
+            circleci config process .circleci/workflows/modern.yml > modern.yml
+            circleci local execute --config modern.yml
+          
+  commander-decks:
+    executor: default-executor
+    steps:
+      - checkout
+      - run:
+          name: Run commander pipeline
+          command: |
+            echo "Running commander-decks pipeline"
+            circleci config process .circleci/workflows/commander.yml > commander.yml
+            circleci local execute --config commander.yml
 
 workflows:
-  say-hello-workflow:
+  version: 2
+  detect-changes:
     jobs:
-      - say-hello
+      - modern-decks:
+          filters:
+            branches:
+              only:
+                - main
+            paths:
+              only:
+                - mtg-decks/modern/*
+      - commander-decks:
+          filters:
+            branches:
+              only:
+                - main
+            paths:
+              only:
+                - mtg-decks/commander/*

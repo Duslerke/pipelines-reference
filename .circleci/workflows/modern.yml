@@ -1,0 +1,18 @@
+version: 2.1
+
+jobs:
+  modern-decks:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: "Spellheart deck list"
+          command: |
+            echo "Spellheart deck list:"
+            cat mtg-decks/modern/ur-spellheart.txt
+
+workflows:
+  decks-workflow:
+    jobs:
+      - modern-decks

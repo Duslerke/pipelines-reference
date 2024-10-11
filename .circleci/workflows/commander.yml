@@ -1,0 +1,18 @@
+version: 2.1
+
+jobs:
+  commander-decks:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: "Vampires deck list"
+          command: |
+            echo "Vampires deck list:"
+            cat mtg-decks/commander/rakdos-vampires.txt
+
+workflows:
+  decks-workflow:
+    jobs:
+      - commander-decks
