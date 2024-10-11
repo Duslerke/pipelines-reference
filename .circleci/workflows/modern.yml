@@ -13,6 +13,6 @@ jobs:
             cat mtg-decks/modern/ur-spellheart.txt
 
 workflows:
-  decks-workflow:
+  decks-workflow-modern:
     jobs:
       - modern-decks-config

@@ -13,6 +13,6 @@ jobs:
             cat mtg-decks/commander/rakdos-vampires.txt
 
 workflows:
-  decks-workflow:
+  decks-workflow-commander:
     jobs:
       - commander-decks-config
