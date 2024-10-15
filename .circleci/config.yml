@@ -1,50 +1,16 @@
 version: 2.1
 
-executors:
-  default-executor:
-    docker:
-      - image: cimg/base:current
+setup: true
 
-jobs:
-  modern-decks:
-    executor: default-executor
-    steps:
-      - checkout
-      - run:
-          name: Run modern pipeline
-          command: |
-            echo "Running modern-decks pipeline"
-            circleci config process .circleci/workflows/modern.yml > modern.yml
-            circleci local execute --config modern.yml
-          
-  commander-decks:
-    executor: default-executor
-    steps:
-      - checkout
-      - run:
-          name: Run commander pipeline
-          command: |
-            echo "Running commander-decks pipeline"
-            circleci config process .circleci/workflows/commander.yml > commander.yml
-            circleci local execute --config commander.yml
+orbs:
+  path-filtering: circleci/path-filtering@0.0.2
 
 workflows:
-  version: 2
-  detect-changes:
+  setup-workflow:
     jobs:
-      - modern-decks:
-          filters:
-            branches:
-              only:
-                - main
-            paths:
-              only:
-                - mtg-decks/modern/*
-      - commander-decks:
-          filters:
-            branches:
-              only:
-                - main
-            paths:
-              only:
-                - mtg-decks/commander/*
+      - path-filtering/filter:
+          base-revision: main
+          config-path: .circleci/workflows/game-types.yml
+          mapping: |
+            mtg-decks/commander/.* commander-decks-job true
+            mtg-decks/modern/.* modern-decks-job true

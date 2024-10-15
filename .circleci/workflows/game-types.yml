@@ -1,0 +1,54 @@
+version: 2.1
+
+executors:
+  base:
+    docker:
+      - image: cimg/base:stable
+
+parameters:
+  modern-decks-job:
+    type: boolean
+    default: false
+  commander-decks-job:
+    type: boolean
+    default: false
+  all-mtg-decks:
+    type: boolean
+    default: false
+
+jobs:
+  modern-decks-config:
+    executor: base
+    steps:
+      - checkout
+      - run:
+          name: "Spellheart deck list"
+          command: |
+            echo "Spellheart deck list:"
+            cat mtg-decks/modern/ur-spellheart.txt
+  commander-decks-config:
+    executor: base
+    steps:
+      - checkout
+      - run:
+          name: "Vampires deck list"
+          command: |
+            echo "Vampires deck list:"
+            cat mtg-decks/commander/rakdos-vampires.txt
+
+workflows:
+  decks-workflow-modern:
+    when: 
+      or: 
+        - << pipeline.parameters.modern-decks-job >>
+        - << pipeline.parameters.all-mtg-decks >> 
+    jobs:
+      - modern-decks-config
+
+  decks-workflow-commander:
+    when: 
+      or: 
+        - << pipeline.parameters.commander-decks-job >>
+        - << pipeline.parameters.all-mtg-decks >>  
+    jobs:
+      - commander-decks-config
