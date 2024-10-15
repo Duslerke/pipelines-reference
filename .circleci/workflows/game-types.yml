@@ -25,7 +25,7 @@ jobs:
           name: "Spellheart deck list"
           command: |
             echo "Spellheart deck list:"
-            cat mtg-decks/modern/ur-spellheart.txt
+            cat mtg-decks/modern/ur-spellheart.json
   commander-decks-config:
     executor: base
     steps:
