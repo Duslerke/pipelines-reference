@@ -16,6 +16,7 @@ parameters:
     type: boolean
     default: false
 
+# TODO: Split the jobs into orbs.
 jobs:
   modern-decks-config:
     executor: base
