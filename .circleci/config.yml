@@ -10,15 +10,17 @@ workflows:
     jobs:
       # Any way to.. you got a list of params, and then call job for every item in the list?
       - path-filtering/filter:
-          name: determine deck type
+          name: determine-deck-type
           base-revision: main
           config-path: .circleci/workflows/game-types.yml
           mapping: |
             mtg-decks/commander/.* commander-decks-job true
             mtg-decks/modern/.* modern-decks-job true
       - path-filtering/filter:
-          name: analyse bulk card statistics
+          name: analyse-bulk-card-statistics
           base-revision: main
           config-path: .circleci/workflows/abc.yml
           mapping: |
             mtg-decks/bulk/.* trigger-abc-wf true
+          requires:
+           - determine-deck-type
