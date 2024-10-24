@@ -1,0 +1,27 @@
+version: 2.1
+
+executors:
+  base:
+    docker:
+      - image: cimg/base:stable
+
+parameters:
+  trigger-abc-wf:
+    type: boolean
+    default: false
+
+jobs:
+  abc-job:
+    executor: base
+    steps:
+      - checkout
+      - run:
+          name: "ABC is never XYZ!"
+          command: |
+            echo "ABC, ABC."
+
+workflows:
+  decks-workflow-modern:
+    when: << pipeline.parameters.trigger-abc-wf >>
+    jobs:
+      - modern-decks-config
